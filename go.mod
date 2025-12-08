@@ -1,4 +1,4 @@
-module github.com/yourorg/heicconv
+module github.com/dikayx/heic2jpeg
 
 go 1.23
 
