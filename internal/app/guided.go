@@ -13,19 +13,20 @@ import (
 
 func runGuided() {
 	welcome()
-
 	reader := bufio.NewReader(os.Stdin)
 
+	// --- Step 1: Choose conversion type ---
 	fmt.Println("Choose conversion type:")
 	fmt.Println("1) In-place")
 	fmt.Println("2) Convert to destination")
 	fmt.Println("3) Copy + Convert")
-
 	fmt.Print("Enter choice: ")
+
 	var mode int
 	fmt.Fscan(reader, &mode)
 	reader.ReadString('\n')
 
+	// --- Step 2: Advanced options ---
 	quality := 90
 	dryRun := false
 	deleteOrig := false
@@ -50,30 +51,44 @@ func runGuided() {
 		deleteOrig = strings.TrimSpace(strings.ToLower(delStr)) == "y"
 	}
 
+	// --- Step 3: Pick source folder ---
+	pause("Next, you'll pick the SOURCE folder.")
 	src, err := zenity.SelectFile(zenity.Directory(), zenity.Title("Select source folder"))
 	if err != nil {
 		fmt.Println("Cancelled.")
 		return
 	}
 
+	// --- Step 4: Scan files ---
 	jobs, _ := walkFiles(src)
 	heicCount := countHeic(jobs)
 
+	fmt.Printf("Gathering files…\nFound %d files (%d HEIC).\n", len(jobs), heicCount)
 	if mode == ModeInPlace && heicCount == 0 {
-		fmt.Println("No HEIC files found.")
+		fmt.Println("No HEIC files found. Exiting.")
 		return
 	}
 
+	// --- Step 5: Pick destination if needed ---
 	var dst string
 	if mode == ModeDestFolder || mode == ModeCopyConvert {
+		pause("Next, you'll choose the DESTINATION folder.")
 		dst, _ = zenity.SelectFile(zenity.Directory(), zenity.Title("Select destination folder"))
 	}
 
+	// --- Step 6: Process files ---
 	err = runWorkers(jobs, src, dst, mode, quality, 4, dryRun, deleteOrig)
 	if err != nil {
 		fmt.Println(err)
 	}
+
 	fmt.Println("Done.")
+}
+
+// pause prints a message and waits for ENTER
+func pause(msg string) {
+	fmt.Printf("%s (press ENTER to continue)\n", msg)
+	bufio.NewReader(os.Stdin).ReadBytes('\n')
 }
 
 func welcome() {
