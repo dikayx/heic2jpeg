@@ -39,5 +39,6 @@ clean:
 .PHONY: release
 release: $(TARGET_DIR)
 	GOOS=windows GOARCH=amd64 $(GOBUILD) -o $(TARGET_DIR)/$(BINARY_NAME).exe $(CMD_PATH)
-	GOOS=darwin  GOARCH=amd64 $(GOBUILD) -o $(TARGET_DIR)/$(BINARY_NAME)_mac $(CMD_PATH)
+	GOOS=darwin  GOARCH=arm64 $(GOBUILD) -o $(TARGET_DIR)/$(BINARY_NAME)_mac_arm64 $(CMD_PATH)
+	GOOS=darwin  GOARCH=amd64 $(GOBUILD) -o $(TARGET_DIR)/$(BINARY_NAME)_mac_amd64 $(CMD_PATH)
 	GOOS=linux   GOARCH=amd64 $(GOBUILD) -o $(TARGET_DIR)/$(BINARY_NAME)_linux $(CMD_PATH)

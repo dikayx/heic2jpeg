@@ -42,7 +42,7 @@ A simple, fast, and dependency-free **HEIC → JPEG converter** for macOS, Windo
 ### Requirements
 
 - Go 1.20+ (for compiling)  
-- Or download a prebuilt binary (in future releases)
+- Or download a [precompiled binary](https://github.com/dikayx/heic2jpeg/releases)
 
 ---
 
