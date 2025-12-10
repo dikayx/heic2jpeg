@@ -20,35 +20,52 @@ func runGuided() {
 	fmt.Println("1) In-place")
 	fmt.Println("2) Convert to destination")
 	fmt.Println("3) Copy + Convert")
-	fmt.Print("Enter choice: ")
+	fmt.Print("Enter choice (default 1): ")
 
 	var mode int
-	fmt.Fscan(reader, &mode)
-	reader.ReadString('\n')
+	input, _ := reader.ReadString('\n')
+	input = strings.TrimSpace(input)
+	if input == "" {
+		mode = ModeInPlace
+	} else {
+		fmt.Sscan(input, &mode)
+	}
 
 	// --- Step 2: Advanced options ---
 	quality := 90
 	dryRun := false
 	deleteOrig := false
 
-	fmt.Print("Configure advanced options? (y/n): ")
+	fmt.Print("Configure advanced options? (y/n, default n): ")
 	yn, _ := reader.ReadString('\n')
 	yn = strings.TrimSpace(strings.ToLower(yn))
+	if yn == "" {
+		yn = "n"
+	}
 
 	if yn == "y" {
-		fmt.Print("JPEG quality (1-100): ")
+		fmt.Printf("JPEG quality (1-100, default %d): ", quality)
 		qStr, _ := reader.ReadString('\n')
-		if q, err := strconv.Atoi(strings.TrimSpace(qStr)); err == nil {
-			quality = q
+		qStr = strings.TrimSpace(qStr)
+		if qStr != "" {
+			if q, err := strconv.Atoi(qStr); err == nil {
+				quality = q
+			}
 		}
 
-		fmt.Print("Dry run? (y/n): ")
+		fmt.Printf("Dry run? (y/n, default %v): ", dryRun)
 		dStr, _ := reader.ReadString('\n')
-		dryRun = strings.TrimSpace(strings.ToLower(dStr)) == "y"
+		dStr = strings.TrimSpace(strings.ToLower(dStr))
+		if dStr != "" {
+			dryRun = dStr == "y"
+		}
 
-		fmt.Print("Delete originals? (y/n): ")
+		fmt.Printf("Delete originals? (y/n, default %v): ", deleteOrig)
 		delStr, _ := reader.ReadString('\n')
-		deleteOrig = strings.TrimSpace(strings.ToLower(delStr)) == "y"
+		delStr = strings.TrimSpace(strings.ToLower(delStr))
+		if delStr != "" {
+			deleteOrig = delStr == "y"
+		}
 	}
 
 	// --- Step 3: Pick source folder ---
@@ -77,6 +94,7 @@ func runGuided() {
 	}
 
 	// --- Step 6: Process files ---
+	fmt.Println("Starting conversion…")
 	err = runWorkers(jobs, src, dst, mode, quality, 4, dryRun, deleteOrig)
 	if err != nil {
 		fmt.Println(err)
