@@ -1,5 +1,9 @@
 # **HEIC2JPEG — Cross-Platform HEIC Converter**
 
+![CI](https://github.com/dikayx/heic2jpeg/actions/workflows/test.yml/badge.svg)
+![Go Version](https://img.shields.io/github/go-mod/go-version/dikayx/heic2jpeg)
+![License](https://img.shields.io/github/license/dikayx/heic2jpeg)
+
 A simple, fast, and dependency-free **HEIC → JPEG converter** for macOS, Windows, and Linux.  
 
 ✔ Preserves folder structure  
