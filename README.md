@@ -39,19 +39,38 @@ A simple, fast, and dependency-free **HEIC → JPEG converter** for macOS, Windo
 
 ## 🚀 Getting Started
 
-### Requirements
+### TL;DR
 
-- Go 1.20+ (for compiling)  
-- Or download a [precompiled binary](https://github.com/dikayx/heic2jpeg/releases)
+Download the latest version from the [releases](https://github.com/dikayx/heic2jpeg/releases) and run:
+
+#### On macOS / Linux:
+
+```sh
+./heic2jpeg
+```
+
+> Note: On macOS, you may need to tell Gatekeeper not to worry about the app: `xattr -d com.apple.quarantine ./heic2jpeg`
+
+#### On Windows:
+
+```bat
+heic2jpeg.exe
+```
+
+This will launch the guided mode and walk you through the conversion process.
 
 ---
 
-## 📦 Installation
+## 📦 Build it yourself
 
-### Clone & build manually
+### Requirements
+
+- Go 1.20+ (for compiling)
+
+### Build Steps
 
 ```sh
-git clone https://github.com/yourname/heic2jpeg
+git clone https://github.com/dikayx/heic2jpeg
 cd heic2jpeg
 make build
 ```
@@ -150,18 +169,6 @@ To use the command-line interface:
 
 ```sh
 ./heic2jpeg cli --inplace --source "/photos" --quality 75 --delete-originals
-```
-
-## 📂 Folder Structure
-
-```
-.
-├── cmd/
-│   └── heic2jpeg/      # main.go entrypoint
-├── internal/
-│   └── app/            # application logic
-├── target/             # build output from Makefile
-└── Makefile
 ```
 
 ## 🧪 Running Tests
